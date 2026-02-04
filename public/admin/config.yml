@@ -1,15 +1,13 @@
 # Decap CMS Configuration for WellAfterSixty
 # This controls all the content types and fields in your admin panel
 
-# Set to false for production - the proxy only runs locally
-local_backend: false
-
 backend:
   name: github
   repo: rationfleet/wellaftersixty
   branch: main
   # OAuth authenticator hosted on Cloudflare Workers
   base_url: https://wellaftersixty-auth.ration-fleet-9l.workers.dev
+  auth_endpoint: auth
 
 # Where uploaded images are stored
 media_folder: "public/images"
