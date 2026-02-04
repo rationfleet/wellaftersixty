@@ -1,21 +1,19 @@
 ---
 title: "Strength Training After 65: The Ultimate Guide to Bone Health"
 slug: strength-training-guide
-category: Mobility & Fitness
-author: Dr. Sarah Jenkins
-authorTitle: Geriatric Physical Therapist
+category: "Mobility & Fitness"
+author: "Dr. Sarah Jenkins"
+authorTitle: "Geriatric Physical Therapist"
 date: 2023-10-15
-readTime: 6 min read
-excerpt: Building muscle isn't just for bodybuilders. Discover how light resistance training can significantly improve bone density and reduce fall risk.
-image: /images/strength-training.jpg
+readTime: "6 min read"
+excerpt: "Building muscle isn't just for bodybuilders. Discover how light resistance training can significantly improve bone density and reduce fall risk."
+image: "https://lh3.googleusercontent.com/aida-public/AB6AXuAKzt4SyTCXBnfkElTjmJ3uRVXJvThQ1xjMWUBH5Nl4lmZiWclEEo3P5TWpNgMk1OXyc98iXPWeLdqRfowI43mJC-dvWQWwpPEshco1Ad97lhQv21UaoBBUxMdanrUVP794zbebyAxSjIzqf4Ka-YnKaXNm0bdQnxziiMqTMpUrsy6hc-ZgJWpWhapRWgu0H_I9K-HS_qKHoH427GbP2e8-hs2xiQyTulh2gu2cmsd3-KAGkNl9QAoJZeLqBaSe3BFyroQ6WW3BeICH"
 featured: true
 ---
 
-# Strength Training After 65: The Ultimate Guide to Bone Health
+## Why Strength Training Matters After 65
 
 As we age, our bodies naturally lose muscle mass and bone density. This process, called sarcopenia, can lead to weakness, increased fall risk, and reduced independence. But here's the good news: **strength training can reverse these effects**, no matter your age.
-
-## Why Strength Training Matters
 
 Studies show that adults who engage in regular resistance training experience:
 
@@ -39,7 +37,7 @@ Start with 2-3 pound weights and focus on proper form. Gradually increase weight
 
 ## Sample Beginner Routine
 
-Perform this routine 2-3 times per week:
+Here's a simple routine to get you started (perform 2-3 times per week):
 
 1. **Seated Leg Raises** - 10 repetitions each leg
 2. **Wall Push-ups** - 8-10 repetitions
