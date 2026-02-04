@@ -29,49 +29,82 @@ export default function Newsletter({ actionData }: Route.ComponentProps) {
             <Header />
             <main className="flex-grow">
                 {/* Hero Section */}
-                <section className="bg-gradient-to-br from-primary via-primary/90 to-primary/80 text-white py-20 px-4">
-                    <div className="max-w-3xl mx-auto text-center">
-                        <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full mb-6">
-                            <span className="material-symbols-outlined">mail</span>
-                            <span className="text-sm font-medium">Weekly Newsletter</span>
+                <section className="bg-gradient-to-br from-primary via-[#5B7B6B] to-[#4A6B5B] text-white py-24 px-4 relative overflow-hidden">
+                    {/* Decorative elements */}
+                    <div className="absolute top-0 left-0 w-64 h-64 bg-white/5 rounded-full -translate-x-1/2 -translate-y-1/2" />
+                    <div className="absolute bottom-0 right-0 w-96 h-96 bg-white/5 rounded-full translate-x-1/3 translate-y-1/3" />
+                    <div className="absolute top-1/2 left-1/4 w-2 h-2 bg-white/30 rounded-full animate-pulse" />
+                    <div className="absolute top-1/3 right-1/4 w-3 h-3 bg-white/20 rounded-full animate-pulse" style={{ animationDelay: '1s' }} />
+
+                    <div className="max-w-3xl mx-auto text-center relative z-10">
+                        <div className="inline-flex items-center gap-2 bg-white/15 backdrop-blur-md px-5 py-2.5 rounded-full mb-8 border border-white/20 shadow-lg">
+                            <span className="material-symbols-outlined text-xl">mail</span>
+                            <span className="text-sm font-semibold tracking-wide">Weekly Newsletter</span>
                         </div>
-                        <h1 className="text-4xl sm:text-5xl font-bold mb-6">
-                            Stay Healthy, Stay Informed
+                        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
+                            Stay Healthy,<br />Stay Informed
                         </h1>
-                        <p className="text-xl text-white/90 mb-8 max-w-xl mx-auto">
+                        <p className="text-lg sm:text-xl text-white/85 mb-10 max-w-xl mx-auto leading-relaxed">
                             Join thousands of seniors who receive our weekly wellness tips, health news, and expert advice straight to their inbox.
                         </p>
 
-                        {/* Subscription Form */}
-                        <Form method="post" className="max-w-md mx-auto">
-                            <div className="flex flex-col sm:flex-row gap-3">
-                                <input
-                                    type="email"
-                                    name="email"
-                                    required
-                                    placeholder="Enter your email address"
-                                    className="flex-grow px-5 py-4 rounded-lg text-navy text-lg border-none focus:ring-4 focus:ring-white/30"
-                                />
-                                <button
-                                    type="submit"
-                                    className="bg-navy hover:bg-navy/90 text-white font-bold px-8 py-4 rounded-lg transition-colors text-lg whitespace-nowrap"
-                                >
-                                    Subscribe Free
-                                </button>
-                            </div>
-
-                            {actionData && (
-                                <div className={`mt-4 p-3 rounded-lg ${actionData.success ? 'bg-green-500/20' : 'bg-red-500/20'}`}>
-                                    {actionData.message}
+                        {/* Glassmorphic Subscription Card */}
+                        <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 sm:p-8 max-w-lg mx-auto border border-white/20 shadow-2xl">
+                            <Form method="post">
+                                <div className="flex flex-col gap-4">
+                                    <div className="relative">
+                                        <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-navy/50">email</span>
+                                        <input
+                                            type="email"
+                                            name="email"
+                                            required
+                                            placeholder="Enter your email address"
+                                            className="w-full pl-12 pr-5 py-4 rounded-xl text-navy text-lg bg-white border-2 border-transparent focus:border-white focus:ring-4 focus:ring-white/30 transition-all shadow-lg placeholder:text-navy/40"
+                                        />
+                                    </div>
+                                    <button
+                                        type="submit"
+                                        className="bg-navy hover:bg-navy/90 text-white font-bold px-8 py-4 rounded-xl transition-all text-lg flex items-center justify-center gap-2 shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-[0.98]"
+                                    >
+                                        <span>Subscribe Free</span>
+                                        <span className="material-symbols-outlined">arrow_forward</span>
+                                    </button>
                                 </div>
-                            )}
-                        </Form>
 
-                        <p className="text-sm text-white/60 mt-4">
-                            No spam, ever. Unsubscribe at any time.
-                        </p>
+                                {actionData && (
+                                    <div className={`mt-5 p-4 rounded-xl flex items-center gap-3 ${actionData.success ? 'bg-green-500/30 border border-green-400/30' : 'bg-red-500/30 border border-red-400/30'}`}>
+                                        <span className="material-symbols-outlined">{actionData.success ? 'check_circle' : 'error'}</span>
+                                        <span>{actionData.message}</span>
+                                    </div>
+                                )}
+                            </Form>
+
+                            <div className="flex items-center justify-center gap-4 mt-5 text-sm text-white/60">
+                                <span className="flex items-center gap-1.5">
+                                    <span className="material-symbols-outlined text-base">lock</span>
+                                    No spam, ever
+                                </span>
+                                <span className="w-1 h-1 bg-white/40 rounded-full" />
+                                <span>Unsubscribe anytime</span>
+                            </div>
+                        </div>
+
+                        {/* Social Proof */}
+                        <div className="mt-10 flex flex-col items-center gap-3">
+                            <div className="flex -space-x-2">
+                                {['👩‍🦳', '👨‍🦳', '👵', '👴', '🧓'].map((emoji, i) => (
+                                    <div key={i} className="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center border-2 border-white/30 text-lg">
+                                        {emoji}
+                                    </div>
+                                ))}
+                            </div>
+                            <p className="text-white/70 text-sm">
+                                <span className="font-semibold text-white">10,000+</span> seniors already subscribed
+                            </p>
+                        </div>
                     </div>
                 </section>
+
 
                 {/* What You'll Get */}
                 <section className="py-16 px-4 bg-surface-light">
