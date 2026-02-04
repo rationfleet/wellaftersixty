@@ -1,0 +1,184 @@
+# Decap CMS Configuration for WellAfterSixty
+# This controls all the content types and fields in your admin panel
+
+# Use local backend for development (no authentication needed)
+local_backend: true
+
+backend:
+  name: git-gateway
+  branch: main
+
+# Where uploaded images are stored
+media_folder: "public/images"
+public_folder: "/images"
+
+# Content Collections - These appear in the admin sidebar
+collections:
+  # ==================== BLOG POSTS ====================
+  - name: "blog"
+    label: "📝 Blog Posts"
+    label_singular: "Blog Post"
+    folder: "content/blog"
+    create: true          # Allow creating new posts
+    delete: true          # Allow deleting posts
+    slug: "{{slug}}"      # Filename will be based on title
+    sortable_fields: ["date", "title", "category"]
+    view_groups:
+      - label: "Category"
+        field: category
+    fields:
+      # Title
+      - label: "Title"
+        name: "title"
+        widget: "string"
+        hint: "The main headline for your article"
+
+      # URL Slug
+      - label: "URL Slug"
+        name: "slug"
+        widget: "string"
+        hint: "The URL-friendly version (e.g., 'heart-healthy-tips')"
+
+      # Category
+      - label: "Category"
+        name: "category"
+        widget: "select"
+        options:
+          - "Mobility & Fitness"
+          - "Chronic Care"
+          - "Nutrition"
+          - "Senior Tech"
+          - "Lifestyle"
+        hint: "Choose the most relevant category"
+
+      # Author
+      - label: "Author Name"
+        name: "author"
+        widget: "string"
+        hint: "e.g., Dr. Sarah Jenkins"
+
+      # Author Title
+      - label: "Author Title"
+        name: "authorTitle"
+        widget: "string"
+        required: false
+        hint: "e.g., Geriatric Physical Therapist"
+
+      # Date
+      - label: "Publish Date"
+        name: "date"
+        widget: "datetime"
+        date_format: "MMMM DD, YYYY"
+        time_format: false
+        hint: "When this article will be published"
+
+      # Read Time
+      - label: "Read Time"
+        name: "readTime"
+        widget: "string"
+        default: "5 min read"
+        hint: "Estimated reading time"
+
+      # Excerpt
+      - label: "Excerpt / Summary"
+        name: "excerpt"
+        widget: "text"
+        hint: "A brief 1-2 sentence description shown in article previews"
+
+      # Featured Image
+      - label: "Featured Image"
+        name: "image"
+        widget: "image"
+        required: false
+        hint: "Main image for the article (optional)"
+
+      # Featured Toggle
+      - label: "Featured Article?"
+        name: "featured"
+        widget: "boolean"
+        default: false
+        hint: "Show this article prominently on the homepage"
+
+      # Main Content
+      - label: "Article Content"
+        name: "body"
+        widget: "markdown"
+        hint: "Write your full article here. Use headings, lists, bold text, etc."
+
+  # ==================== PRODUCTS ====================
+  - name: "products"
+    label: "🛒 Products"
+    label_singular: "Product"
+    folder: "content/products"
+    create: true
+    delete: true
+    slug: "{{slug}}"
+    fields:
+      - label: "Product Name"
+        name: "title"
+        widget: "string"
+
+      - label: "URL Slug"
+        name: "slug"
+        widget: "string"
+
+      - label: "Description"
+        name: "description"
+        widget: "text"
+
+      - label: "Product Image"
+        name: "image"
+        widget: "image"
+        required: false
+
+      - label: "Rating (1-5)"
+        name: "rating"
+        widget: "number"
+        min: 1
+        max: 5
+        default: 4
+
+      - label: "Badge"
+        name: "badge"
+        widget: "select"
+        options:
+          - "Best Seller"
+          - "Top Rated"
+          - "Trending"
+          - "New"
+          - "Editor's Choice"
+        default: "Top Rated"
+
+      - label: "Affiliate Link"
+        name: "affiliateUrl"
+        widget: "string"
+        required: false
+        hint: "Amazon or other affiliate link"
+
+      - label: "Price"
+        name: "price"
+        widget: "string"
+        required: false
+        hint: "e.g., $29.99"
+
+  # ==================== SITE SETTINGS ====================
+  - name: "settings"
+    label: "⚙️ Site Settings"
+    files:
+      - name: "general"
+        label: "General Settings"
+        file: "content/settings/general.json"
+        fields:
+          - label: "Site Title"
+            name: "siteTitle"
+            widget: "string"
+            default: "WellAfterSixty"
+
+          - label: "Site Description"
+            name: "siteDescription"
+            widget: "text"
+
+          - label: "Contact Email"
+            name: "contactEmail"
+            widget: "string"
+            required: false
