@@ -12,33 +12,63 @@
     <!-- Include the Decap CMS script -->
     <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
     <script>
-        window.addEventListener("message", (e) => {
+        // MANUAL LOGIN HACK
+        // Logic: Listen for the auth token, simulate the login save, and reload.
+        window.addEventListener("message", async (e) => {
             if (typeof e.data === "string" && e.data.startsWith("authorization:github:success:")) {
-                const data = JSON.parse(e.data.replace("authorization:github:success:", ""));
-                console.log("Got token, forcing login...", data);
+                console.log("Token received! Attempting manual login injection...");
 
-                // Manually authenticate if CMS didn't catch it
-                // We need to wait for CMS to be ready
-                const checkCMS = setInterval(() => {
-                    if (window.CMS) {
-                        clearInterval(checkCMS);
-                        console.log("CMS ready. Token received.");
-                    }
-                }, 100);
+                try {
+                    const data = JSON.parse(e.data.replace("authorization:github:success:", ""));
+                    const token = data.token;
+
+                    if (!token) throw new Error("No token found in message");
+
+                    // 1. Fetch User Data from GitHub
+                    const userResp = await fetch("https://api.github.com/user", {
+                        headers: { Authorization: `token ${token}` }
+                    });
+
+                    if (!userResp.ok) throw new Error("Failed to fetch user data");
+                    const user = await userResp.json();
+
+                    // 2. Construct the CMS User Object
+                    const cmsUser = {
+                        backendName: "github",
+                        token: token,
+                        name: user.name || user.login,
+                        login: user.login,
+                        avatar_url: user.avatar_url,
+                        email: user.email
+                    };
+
+                    console.log("User data fetched. Saving to storage...", cmsUser);
+
+                    // 3. Save to LocalStorage (Try both legacy and new keys)
+                    const jsonUser = JSON.stringify(cmsUser);
+                    localStorage.setItem("netlify-cms-user", jsonUser);
+                    localStorage.setItem("decap-cms-user", jsonUser);
+
+                    // 4. Force Reload to Enter Dashboard
+                    console.log("Login injected. Reloading...");
+                    window.location.reload();
+
+                } catch (err) {
+                    console.error("Manual login failed:", err);
+                    alert("Manual login failed: " + err.message);
+                }
             }
         });
 
-        // HACK: Force enable the button if it's disabled
+        // Ensure button is enabled so you can click it to trigger the flow
         setInterval(() => {
             const btn = document.querySelector("button");
             if (btn && btn.disabled) {
-                console.log("Force enabling button...");
-                btn.disabled = false;
-                btn.classList.remove("disabled");
                 btn.removeAttribute("disabled");
-                // Remove the React-disabled class if possible (it's likely managing it)
+                btn.classList.remove("disabled");
+                btn.disabled = false;
             }
-        }, 1000);
+        }, 500);
     </script>
 </body>
 
