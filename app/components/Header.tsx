@@ -1,4 +1,57 @@
-import { Link, useLocation } from "react-router";
+import { Link, useLocation, Form, useNavigate } from "react-router";
+import { useState, useRef, useEffect } from "react";
+
+function SearchButton() {
+    const [isOpen, setIsOpen] = useState(false);
+    const inputRef = useRef<HTMLInputElement>(null);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (isOpen && inputRef.current) {
+            inputRef.current.focus();
+        }
+    }, [isOpen]);
+
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (inputRef.current?.value) {
+            navigate(`/search?q=${encodeURIComponent(inputRef.current.value)}`);
+            setIsOpen(false);
+        }
+    };
+
+    return (
+        <div className="relative flex items-center">
+            {isOpen ? (
+                <form onSubmit={handleSubmit} className="flex items-center absolute left-0 bg-white shadow-lg rounded-full border border-gray-200 p-1 z-10 w-64 animate-in fade-in slide-in-from-left-4 duration-200">
+                    <span className="material-symbols-outlined text-navy/50 ml-2">search</span>
+                    <input
+                        ref={inputRef}
+                        type="text"
+                        placeholder="Search articles..."
+                        className="flex-1 bg-transparent border-none focus:ring-0 text-sm px-2 py-1 text-navy placeholder:text-navy/40"
+                        onBlur={() => !inputRef.current?.value && setIsOpen(false)}
+                    />
+                    <button
+                        type="button"
+                        onClick={() => setIsOpen(false)}
+                        className="p-1 hover:bg-gray-100 rounded-full text-navy/50"
+                    >
+                        <span className="material-symbols-outlined text-[18px]">close</span>
+                    </button>
+                </form>
+            ) : (
+                <button
+                    onClick={() => setIsOpen(true)}
+                    aria-label="Search"
+                    className="p-2 text-navy hover:bg-cream rounded-full transition-colors"
+                >
+                    <span className="material-symbols-outlined">search</span>
+                </button>
+            )}
+        </div>
+    );
+}
 
 export function Header() {
     const location = useLocation();
@@ -22,12 +75,7 @@ export function Header() {
                 <div className="flex items-center justify-between py-4">
                     {/* Search (Left) */}
                     <div className="flex-1 flex justify-start">
-                        <button
-                            aria-label="Search"
-                            className="p-2 text-navy hover:bg-cream rounded-full transition-colors"
-                        >
-                            <span className="material-symbols-outlined">search</span>
-                        </button>
+                        <SearchButton />
                     </div>
 
                     {/* Logo (Center) */}
@@ -65,8 +113,8 @@ export function Header() {
                                 key={link.path}
                                 to={link.path}
                                 className={`font-medium text-sm tracking-wide py-2 border-b-2 transition-all ${isActive(link.path)
-                                        ? "text-primary border-primary"
-                                        : "text-navy/80 hover:text-primary border-transparent hover:border-primary"
+                                    ? "text-primary border-primary"
+                                    : "text-navy/80 hover:text-primary border-transparent hover:border-primary"
                                     }`}
                             >
                                 {link.label}
