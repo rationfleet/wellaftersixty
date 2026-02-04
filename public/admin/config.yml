@@ -5,8 +5,11 @@
 local_backend: true
 
 backend:
-  name: git-gateway
+  name: github
+  repo: rationfleet/wellaftersixty
   branch: main
+  # Using Sveltia CMS's free OAuth authenticator
+  base_url: https://sveltia-auth.netlify.app
 
 # Where uploaded images are stored
 media_folder: "public/images"
