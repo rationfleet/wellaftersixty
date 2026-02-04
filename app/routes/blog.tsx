@@ -3,6 +3,7 @@ import { Footer } from "~/components/Footer";
 import { Link } from "react-router";
 import { getAllBlogPosts } from "~/utils/content.server";
 import type { Route } from "./+types/blog";
+import { useState } from "react";
 
 export function meta() {
     return [
@@ -18,6 +19,13 @@ export async function loader() {
 
 export default function Blog({ loaderData }: Route.ComponentProps) {
     const { posts } = loaderData;
+    const [activeCategory, setActiveCategory] = useState("All");
+
+    const categories = ["All", "Mobility & Fitness", "Nutrition", "Chronic Care", "Senior Tech", "Lifestyle"];
+
+    const filteredPosts = activeCategory === "All"
+        ? posts
+        : posts.filter(post => post.category === activeCategory);
 
     return (
         <>
@@ -33,12 +41,13 @@ export default function Blog({ loaderData }: Route.ComponentProps) {
 
                 {/* Category Filters */}
                 <div className="flex flex-wrap justify-center gap-3 mb-12">
-                    {["All", "Mobility & Fitness", "Nutrition", "Chronic Care", "Senior Tech", "Lifestyle"].map((category) => (
+                    {categories.map((category) => (
                         <button
                             key={category}
-                            className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${category === "All"
-                                    ? "bg-primary text-white"
-                                    : "bg-gray-100 text-navy/70 hover:bg-primary/10 hover:text-primary"
+                            onClick={() => setActiveCategory(category)}
+                            className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${activeCategory === category
+                                ? "bg-primary text-white"
+                                : "bg-gray-100 text-navy/70 hover:bg-primary/10 hover:text-primary"
                                 }`}
                         >
                             {category}
@@ -48,7 +57,7 @@ export default function Blog({ loaderData }: Route.ComponentProps) {
 
                 {/* Blog Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {posts.map((post) => (
+                    {filteredPosts.map((post) => (
                         <Link
                             key={post.slug}
                             to={`/blog/${post.slug}`}
@@ -81,12 +90,14 @@ export default function Blog({ loaderData }: Route.ComponentProps) {
                     ))}
                 </div>
 
-                {posts.length === 0 && (
+                {filteredPosts.length === 0 && (
                     <div className="text-center py-16 text-navy/50">
-                        <p>No blog posts yet. Add some in the admin panel!</p>
-                        <Link to="/admin/index.html" className="text-primary font-bold hover:underline mt-4 inline-block">
-                            Go to Admin Panel →
-                        </Link>
+                        <p>No blog posts found for this category.</p>
+                        {posts.length === 0 && (
+                            <Link to="/admin/index.html" className="text-primary font-bold hover:underline mt-4 inline-block">
+                                Go to Admin Panel →
+                            </Link>
+                        )}
                     </div>
                 )}
             </main>
