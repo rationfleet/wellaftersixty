@@ -12,10 +12,25 @@
     <!-- Include the Decap CMS script -->
     <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
     <script>
-        // MANUAL LOGIN HACK
-        // Logic: Listen for the auth token, simulate the login save, and reload.
+        // AUTH MESSAGE HANDLER
+        // Handles both success and error cases from OAuth popup
         window.addEventListener("message", async (e) => {
-            if (typeof e.data === "string" && e.data.startsWith("authorization:github:success:")) {
+            if (typeof e.data !== "string") return;
+
+            // Handle authentication errors
+            if (e.data.startsWith("authorization:github:error:")) {
+                console.error("GitHub auth error received:", e.data);
+                try {
+                    const errorData = JSON.parse(e.data.replace("authorization:github:error:", ""));
+                    alert("GitHub Login Failed:\n\n" + (errorData.error_description || errorData.error || "Unknown error") + "\n\nNote: You must have a GitHub account with access to the repository to use this CMS.");
+                } catch (err) {
+                    alert("GitHub login failed. Please make sure you have a GitHub account and try again.");
+                }
+                return;
+            }
+
+            // Handle successful authentication
+            if (e.data.startsWith("authorization:github:success:")) {
                 console.log("Token received! Attempting manual login injection...");
 
                 try {
@@ -29,7 +44,7 @@
                         headers: { Authorization: `token ${token}` }
                     });
 
-                    if (!userResp.ok) throw new Error("Failed to fetch user data");
+                    if (!userResp.ok) throw new Error("Failed to fetch user data from GitHub");
                     const user = await userResp.json();
 
                     // 2. Construct the CMS User Object
@@ -55,7 +70,7 @@
 
                 } catch (err) {
                     console.error("Manual login failed:", err);
-                    alert("Manual login failed: " + err.message);
+                    alert("Login failed: " + err.message + "\n\nPlease try again.");
                 }
             }
         });
